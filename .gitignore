@@ -1,0 +1,18 @@
+#### `.gitignore`
+
+
+
+#Flex Builder noise
+.flexProperties
+.project
+.settings
+bin/
+bin-debug/
+bin-release/
+report/
+bin-test/
+docs/
+.flexLibProperties
+
+.metadata/
+
