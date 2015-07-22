@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal"
+	horizontalAlign="center" verticalAlign="middle">
+
+	<mx:Script>
+		<![CDATA[
+			import es.arcadiaconsulting.flex.handson03.IFigure;
+			import es.arcadiaconsulting.flex.handson03.Square;
+			import es.arcadiaconsulting.flex.handson03.Circle;
+			import es.arcadiaconsulting.flex.handson03.Rectangle;
+			import mx.collections.ArrayCollection;
+			
+			protected var figures:ArrayCollection = new ArrayCollection([
+				new Circle(2), 
+				new Square(2.5), 
+				new es.arcadiaconsulting.flex.handson03.Rectangle(2, 2.5)]);
+				
+			public function showAreas():void {
+				areas.text = null;
+				for each(var figure:IFigure in this.figures) {
+					trace("Figure area: " + figure.getArea());
+					this.areas.text = this.areas.text + "\n" + figure.getArea(); 
+				}				
+			}
+		]]>
+	</mx:Script>
+	<mx:Button label="Calculate Area" click="showAreas()"/>
+	<mx:TextArea id="areas" width="100%" height="100%"/>
+	
+</mx:Application>

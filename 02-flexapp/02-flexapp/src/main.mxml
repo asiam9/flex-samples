@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" horizontalAlign="center" verticalAlign="middle" viewSourceURL="srcview/index.html">
+	<mx:Script>
+		<![CDATA[
+			import es.arcacdiaconsulting.flex.handson02.HelloWorld;
+			
+		]]>
+	</mx:Script>
+	<mx:Label text="{new HelloWorld().message}"/>
+</mx:Application>
