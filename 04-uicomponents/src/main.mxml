@@ -12,9 +12,14 @@
 			
 			protected function onGuardarClick(event:MouseEvent):void {
 				Alert.show("Datos Guardados", "Información");
+				resetForm();
 			}
 			
 			protected function onResetClick(event:MouseEvent): void {
+				resetForm();
+			}
+			
+			protected function resetForm():void{
 				for each(var child:Object in getChildren()) {
 					if(child is TextInput) {
 						(child as TextInput).text = null;
