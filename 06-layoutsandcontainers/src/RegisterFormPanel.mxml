@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:arcadia="es.arcadiaconsulting.flex.handson06.*" 
+	layout="vertical" width="100%" height="100%" title="Formulario de Registro" horizontalAlign="center" verticalAlign="middle">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Container;
+			import mx.core.UIComponent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			
+			protected static const PROVINCIAS:ArrayCollection = new ArrayCollection([
+				{label: "Madrid", data: 1},
+				{label: "Barcelona", data: 2}]); 	
+			
+			protected function onGuardarClick(event:MouseEvent):void {
+				Alert.show("Datos Guardados", "Información");
+				resetForm(this);
+			}
+			
+			protected function onResetClick(event:MouseEvent): void {
+				resetForm(this);
+			}
+			
+			protected function resetForm(component:Container):void{
+				for each(var child:Object in component.getChildren()) {
+					if(child is TextInput) {
+						(child as TextInput).text = null;
+					} else if(child is RadioButton) {
+						(child as RadioButton).selected = false;
+					} else if(child is DateField) {
+						(child as DateField).text = "";
+					} else if(child is ComboBox){
+						(child as ComboBox).selectedItem = null;
+					} else if(child is Container) {
+						resetForm(child as Container);
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Form>
+		<mx:FormHeading label="Introduce el valor de todos los campos" width="100%" height="100%" textAlign="center"/>
+		
+		<mx:Grid >
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="Nombre" labelWidth="150">
+						<mx:TextInput width="180" id="nombre"/>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:FormItem label="Apellidos" labelWidth="150">
+						<mx:TextInput width="210" id="apellidos"/>
+					</mx:FormItem>
+				</mx:GridItem>
+			</mx:GridRow>
+			
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:HBox>
+						<mx:RadioButtonGroup id="idType"/>
+						<mx:FormItem label="Documento" labelWidth="150">
+							<mx:RadioButton label="DNI" groupName="idType" id="idDni"/>
+						</mx:FormItem>
+						<mx:FormItem>
+							<mx:RadioButton label="CIF" groupName="idType" id="idCIF"/>
+						</mx:FormItem>
+						<mx:FormItem>
+							<mx:TextInput maxChars="9" width="75" id="idValue"/>
+						</mx:FormItem>
+					</mx:HBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:FormItem label="Fecha de Nacimiento" labelWidth="150">
+						<mx:DateField id="fechaNacimiento" showToday="false"/>
+					</mx:FormItem>				
+				</mx:GridItem>
+				
+			</mx:GridRow>
+
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="Provincia" labelWidth="150">
+						<mx:ComboBox width="185" id="provincia" dataProvider="{PROVINCIAS}" selectedIndex="-1"></mx:ComboBox>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:HBox>
+						<mx:FormItem label="Localidad" labelWidth="150">
+							<mx:TextInput id="localidad"/>
+						</mx:FormItem>
+						<mx:FormItem label="Código Postal">
+							<mx:TextInput width="80" id="cp"/>
+						</mx:FormItem>
+					</mx:HBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="Email" labelWidth="150">
+						<mx:TextInput width="180" id="email"/>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:HBox>
+						<mx:FormItem label="Telefono Fijo" labelWidth="150">
+							<mx:TextInput width="90" id="telefonoFijo"/>
+						</mx:FormItem>
+						<mx:FormItem label="Telefono Movil">
+							<mx:TextInput width="90" id="telefonoMovil"/>
+						</mx:FormItem>
+					</mx:HBox>
+				</mx:GridItem>
+			</mx:GridRow>
+
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="Password" labelWidth="150">
+						<arcadia:PasswordTextInput id="password"/>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:FormItem label="Confirmar Password" labelWidth="150">
+						<arcadia:PasswordTextInput id="confirmPassword"/>
+					</mx:FormItem>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+	</mx:Form>
+	
+	<mx:ControlBar>
+		<mx:Button label="Limipiar formulario" click="onResetClick(event);"/>
+		<mx:Button label="Guardar" click="onGuardarClick(event);"/>
+	</mx:ControlBar>
+	
+</mx:Panel>
