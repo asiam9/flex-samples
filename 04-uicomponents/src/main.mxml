@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			
+			protected static const PROVINCIAS:ArrayCollection = new ArrayCollection([
+				{label: "Madrid", data: 1},
+				{label: "Barcelona", data: 2}]); 	
+			
+			protected function onGuardarClick(event:MouseEvent):void {
+				Alert.show("Datos Guardados", "Información");
+			}
+			
+			protected function onResetClick(event:MouseEvent): void {
+				for each(var child:Object in getChildren()) {
+					if(child is TextInput) {
+						(child as TextInput).text = null;
+					} else if(child is RadioButton) {
+						(child as RadioButton).selected = false;
+					} else if(child is DateField) {
+						(child as DateField).text = null;
+					} else if(child is ComboBox){
+						(child as ComboBox).selectedItem = null;
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Label x="56" y="56" text="Nombre"/>
+	<mx:TextInput x="56" y="82" width="180" id="nombre"/>
+	<mx:TextInput x="249" y="82" width="210" id="apellidos"/>
+	<mx:Label x="249" y="56" text="Apellidos"/>
+	<mx:RadioButtonGroup id="idType"/>
+	<mx:RadioButton x="56" y="136" label="DNI" groupName="idType" id="idDni"/>
+	<mx:RadioButton x="109" y="136" label="CIF" groupName="idType" id="idCIF"/>
+	<mx:TextInput x="161" y="136" maxChars="9" width="75" id="idValue"/>
+	<mx:ComboBox x="56" y="190" width="185" id="provincia" dataProvider="{PROVINCIAS}" selectedIndex="-1"></mx:ComboBox>
+	<mx:Label x="56" y="112" text="Documento"/>
+	<mx:Label x="56" y="166" text="Provincia"/>
+	<mx:TextInput x="249" y="190" id="localidad"/>
+	<mx:Label x="249" y="166" text="Localidad"/>
+	<mx:TextInput x="426" y="190" width="80" id="cp"/>
+	<mx:DateField x="249" y="136" id="fechaNacimiento" showToday="false"/>
+	<mx:Label x="426" y="166" text="Código Postal"/>
+	<mx:TextInput x="56" y="251" width="180" id="email"/>
+	<mx:Label x="56" y="229" text="Email"/>
+	<mx:Label x="249" y="229" text="Telefono Fijo"/>
+	<mx:TextInput x="249" y="251" width="90" id="telefonoFijo"/>
+	<mx:Label x="362" y="229" text="Telefono Movil"/>
+	<mx:TextInput x="362" y="251" width="86" id="telefonoMovil"/>
+	<mx:Label x="56" y="290" text="Password"/>
+	<mx:TextInput x="56" y="311" id="password"  displayAsPassword="true"/>
+	<mx:Label x="249" y="290" text="Confirmar Password"/>
+	<mx:TextInput x="249" y="310" id="confirmPassword" displayAsPassword="true"/>
+	<mx:Label x="249" y="112" text="Fecha de Nacimiento"/>
+	<mx:Button x="151" y="360" label="Limipiar formulario" click="onResetClick(event);"/>
+	<mx:Button x="59" y="360" label="Guardar" click="onGuardarClick(event);"/>
+	
+</mx:Application>
