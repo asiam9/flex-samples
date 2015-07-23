@@ -50,7 +50,7 @@
 			
 			protected function onCreationComplete():void {
 				this.validators = [this.nombreV, this.apellidosV, this.idTypeV, this.idValueV, this.provinciaV, this.localidadV,
-					this.cpV, this.emailV, this.passwordV, this.confirmPasswordV, this.telefonoFijoV, this.telefonoMovilV];
+					this.cpV, this.emailV, this.passwordV, this.confirmPasswordV, this.telefonoFijoV, this.telefonoMovilV, this.confirmPasswordMatchV];
 			}
 			
 			protected function validateForm():void {
@@ -75,10 +75,11 @@
 	<mx:StringValidator id="localidadV" source="{this.localidad}" property="text" required="true" />
 	<mx:RegExpValidator id="cpV" source="{this.cp}" property="text" required="true" expression="^\d\{5\}$"/>
 	<mx:EmailValidator id="emailV" source="{this.email}" property="text" required="true" />
-	<mx:StringValidator id="passwordV" source="{this.password}" property="text" required="true" />
-	<mx:StringValidator id="confirmPasswordV" source="{this.confirmPassword}" property="text" required="true" />
+	<mx:StringValidator id="passwordV" source="{this.password}" property="text" required="true" minLength="6" />
+	<mx:StringValidator id="confirmPasswordV" source="{this.confirmPassword}" property="text" required="true" minLength="6" />
 	<mx:PhoneNumberValidator id="telefonoFijoV" source="{this.telefonoFijo}" property="text" allowedFormatChars="()+" minDigits="9" required="false"/> 
-	<mx:PhoneNumberValidator id="telefonoMovilV" source="{this.telefonoMovil}" property="text" allowedFormatChars="()+" minDigits="9" required="false"/> 
+	<mx:PhoneNumberValidator id="telefonoMovilV" source="{this.telefonoMovil}" property="text" allowedFormatChars="()+" minDigits="9" required="false"/>
+	<arcadia:PasswordMatchValidator id="confirmPasswordMatchV"  source="{this.confirmPassword}"  property="text" valueToMatch="{this.password.text}" required="false"/> 
 	
 	<mx:Form>
 		<mx:FormHeading label="Introduce el valor de todos los campos" width="100%" height="100%" textAlign="center"/>
