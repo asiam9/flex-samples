@@ -26,7 +26,7 @@
 					} else if(child is RadioButton) {
 						(child as RadioButton).selected = false;
 					} else if(child is DateField) {
-						(child as DateField).text = null;
+						(child as DateField).text = "";
 					} else if(child is ComboBox){
 						(child as ComboBox).selectedItem = null;
 					}
