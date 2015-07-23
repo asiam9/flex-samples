@@ -5,6 +5,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.binding.utils.BindingUtils;
 			import mx.core.Container;
 			import mx.core.UIComponent;
 			import mx.collections.ArrayCollection;
