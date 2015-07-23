@@ -3,16 +3,11 @@
 
 
 #Flex Builder noise
-.flexProperties
-.project
-.settings
 bin/
-bin-debug/
-bin-release/
+bin-debug/*
+bin-release/*
 report/
-bin-test/
+bin-test/*
 docs/
-.flexLibProperties
-
 .metadata/
-
+.settings/
