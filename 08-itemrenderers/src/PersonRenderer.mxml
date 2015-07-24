@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			protected var person:Object;
+			
+			[Bindable]
+			protected var mailLink:String;
+		
+			override public function set data(value:Object):void {
+				this.person = value;
+				this.mailLink = "<a href='mailto:" + this.person.email +"'>" + this.person.email +"</a>"
+				trace(this.mailLink) 
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Text fontSize="20" fontWeight="bold" text="{this.person.surname + ', ' + this.person.name}"/>
+	<mx:Text htmlText="{this.mailLink}" />
+	<mx:Text text="{this.person.company}" />
+	
+</mx:VBox>

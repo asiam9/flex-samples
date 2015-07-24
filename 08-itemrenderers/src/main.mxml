@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	horizontalAlign="center" verticalAlign="middle">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			
+			[Bindable]
+			protected var people:ArrayCollection = new ArrayCollection([
+				{name: "Enrique", surname: "Criado", email: "ecriado@calculo-sa.es", company: "Cálculo SA"},
+				{name: "Jose María", surname: "Godino", email: "jgordino@calculo-sa.es", company: "Cálculo SA"},
+				{name: "Zakaria", surname: "el Mrabet", email: "zelmrabet@calculo-sa.es", company: "Cálculo SA"},
+				{name: "Francisco", surname: "González", email: "fgonzalez@calculo-sa.es", company: "Cálculo SA"},
+				{name: "Gonzalo", surname: "Gómez", email: "gonzalo@arcadiaconsulting.es", company: "Arcadia Consulting"}
+				
+			]);
+		]]>
+	</mx:Script>
+	
+	<mx:List width="100%" height="100%" dataProvider="{this.people}" itemRenderer="PersonRenderer"/>
+</mx:Application>
