@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:arcadia="es.arcadiaconsulting.flex.handson09.*" 
+	layout="vertical" horizontalAlign="center" verticalAlign="middle" >
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.formatters.DateFormatter;
+			import es.arcadiaconsulting.flex.handson09.SameValueEvent;
+			import mx.controls.Alert;
+			
+			protected function onTextAreaSameValueEvent(event:SameValueEvent):void {
+				Alert.show("Value match found: " + event.matchValue + " on " + this.formatter.format(event.date) , "Info");	
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:DateFormatter id="formatter" formatString="MM/DD/YYYY HH:NN:SS" />
+	
+	<mx:Label text="Set the value to match" />
+	<mx:TextInput id="matchingValue"/>
+	<arcadia:TextAreaWithEvent matchingValue="{this.matchingValue.text}" sameValueEvent="onTextAreaSameValueEvent(event);"/>
+	
+</mx:Application>
