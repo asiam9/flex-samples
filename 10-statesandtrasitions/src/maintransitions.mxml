@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	horizontalAlign="center"  verticalAlign="middle" currentState="login">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			protected function onRegisterLinkClick(event:Event):void {
+				this.currentState = "register";
+			}
+			
+			protected function onRegisterButtonClick(event:Event):void {
+				Alert.show("User registerd", "Registration Ok");
+				this.currentState = "login";
+				cleanForm();
+			}
+			
+			protected function onCancelButtonClick(event:Event):void {
+				this.currentState = "login";
+				cleanForm();
+			}
+			
+			protected function cleanForm():void {
+				this.email.text = "";
+				this.password.text = "";
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:states>
+		<mx:State id="login" name="login" />
+		<mx:State id="register" name="register">
+				<mx:AddChild relativeTo="{this.ffPassword}" position="after">
+					<mx:FormItem id="ffPasswordConfirm" label=" Confirm Password">
+						<mx:TextInput id="passwordConfirm" width="200" displayAsPassword="true"/>
+					</mx:FormItem>
+				</mx:AddChild>
+				<mx:AddChild  relativeTo="{this.loginButton}" position="after">
+					<mx:Button id="registerButton" label="Register" click="onRegisterButtonClick(event);"/>
+				</mx:AddChild>
+				<mx:AddChild relativeTo="{this.registerButton}" position="after">
+					<mx:Button id="cancelButton" label="Cancel" click="onCancelButtonClick(event);"/>
+				</mx:AddChild>
+				<mx:RemoveChild target="{this.registerLink}" />
+				<mx:RemoveChild target="{this.loginButton}" />
+				<mx:SetProperty target="{this.mainPanel}" name="title" value="Register" />
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="login" toState="register">
+			<mx:Sequence >
+				<mx:WipeUp duration="500" effectStart="trace('Effect to start A1');" target="{this.ffPasswordConfirm}" />
+				<mx:WipeUp duration="500" effectStart="trace('Effect to start A2');" target="{this.registerButton}" />
+				<mx:WipeUp duration="500" effectStart="trace('Effect to start A3');" target="{this.cancelButton}" />
+				<mx:WipeUp duration="500" effectStart="trace('Effect to start R1');" target="{this.registerLink}"/>
+				<mx:WipeUp duration="500" effectStart="trace('Effect to start R2');" target="{this.loginButton}"/>
+				<mx:SetPropertyAction effectStart="trace('Effect to start P');" target="{this.mainPanel}" name="title" value="Register" />
+			</mx:Sequence>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:Panel id="mainPanel" title="LogIn">
+		<mx:Form>
+			<mx:FormItem id="ffEmail" label="Email">
+				<mx:TextInput id="email" width="200"/>
+			</mx:FormItem>
+			<mx:FormItem id="ffPassword" label="Password">
+				<mx:TextInput id="password" width="200" displayAsPassword="true"/>
+			</mx:FormItem>
+		</mx:Form>
+		
+		<mx:ApplicationControlBar>
+			<mx:LinkButton id="registerLink" label="Register now!" click="onRegisterLinkClick(event);"/>
+			<mx:Button id="loginButton" label="LogIn"  />
+		</mx:ApplicationControlBar>
+	</mx:Panel>
+	
+</mx:Application>
