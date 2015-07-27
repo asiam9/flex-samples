@@ -55,7 +55,7 @@
 				<mx:WipeUp duration="500" effectStart="trace('Effect to start A3');" target="{this.cancelButton}" />
 				<mx:WipeUp duration="500" effectStart="trace('Effect to start R1');" target="{this.registerLink}"/>
 				<mx:WipeUp duration="500" effectStart="trace('Effect to start R2');" target="{this.loginButton}"/>
-				<mx:SetPropertyAction effectStart="trace('Effect to start P');" target="{this.mainPanel}" name="title" value="Register" />
+				<mx:SetPropertyAction effectStart="trace('Effect to start P');" target="{this.mainPanel}" name="title" value="Register"/>
 			</mx:Sequence>
 		</mx:Transition>
 	</mx:transitions>
