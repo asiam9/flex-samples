@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<custom:BaseDataGridPanel xmlns:custom="*" xmlns:mx="http://www.adobe.com/2006/mxml" 
+	creationComplete="init();">
+
+	<mx:Script>
+		<![CDATA[
+			import es.arcadiaconsulting.flex.handson12.FilterHeaderChangeEvent;
+			import mx.utils.StringUtil;
+			import mx.collections.ArrayCollection;
+			import mx.controls.DateField;
+			import mx.utils.ObjectUtil;
+			import mx.formatters.DateFormatter;
+			
+			protected var filterName:String;
+			
+			protected function init():void {
+				this.dataTable.addEventListener("filterChanged", onFilterHeaderChanged);		
+				this.gridData.filterFunction = filterByName;
+			}
+			
+			protected function sortActivePeriod(obj1:Object, obj2:Object):int {
+				var obj1Start:Date = DateField.stringToDate(obj1.activePeriod[0].*[0],"YYYYMMDD");
+				var obj1End:Date = DateField.stringToDate(obj1.activePeriod[0].*[1],"YYYYMMDD")
+				var obj2Start:Date = DateField.stringToDate(obj2.activePeriod[0].*[0],"YYYYMMDD")
+				var obj2End:Date = DateField.stringToDate(obj2.activePeriod[0].*[1],"YYYYMMDD")
+				
+				var startCompare:int = ObjectUtil.dateCompare(obj1Start, obj2Start);
+				if(startCompare == 0) {
+					return ObjectUtil.dateCompare(obj1End, obj2End);
+				} else {
+					return startCompare;
+				}
+			}
+			
+			protected function onFilterHeaderChanged(event:FilterHeaderChangeEvent):void {
+				this.filterName = event.newValue;
+				this.gridData.refresh();
+			}
+			
+			protected function filterByName(value:Object):Boolean{
+				var name:String = value.*[0];
+				return this.filterName == "" || name.indexOf(this.filterName) > -1;
+			}
+		]]>
+	</mx:Script>
+
+
+	<mx:AdvancedDataGrid id="dataTable" dataProvider="{this.gridData}" width="100%">
+	   <mx:columns>
+		<mx:AdvancedDataGridColumn dataField="name" headerText="Name"
+				headerRenderer="es.arcadiaconsulting.flex.handson12.FilterHeaderRenderer" />
+		<mx:AdvancedDataGridColumn dataField="phone" headerText="Phone"/>
+		<mx:AdvancedDataGridColumn dataField="email" headerText="Email"/>
+		<mx:AdvancedDataGridColumn dataField="active" headerText="Active" 
+				itemRenderer="ActiveItemRenderer"/>
+		<mx:AdvancedDataGridColumn dataField="activePeriod" headerText="Active Period" 
+			itemRenderer="ActivePeriodItemRenderer"
+			sortCompareFunction="sortActivePeriod"/>
+	   </mx:columns>
+	</mx:AdvancedDataGrid>
+	
+</custom:BaseDataGridPanel>

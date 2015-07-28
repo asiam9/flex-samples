@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" >
+
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.DateField;
+			[Bindable]
+			protected var activePeriod:XML;
+			
+			override public function set data(theData:Object):void {
+				var xmlData:XML = theData as XML;
+				this.activePeriod = xmlData.activePeriod[0]; 
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:DateFormatter id="formatter" formatString="DD/MM/YYYY" />
+
+	<mx:Text text="{formatter.format( DateField.stringToDate(activePeriod.*[0],'YYYYMMDD'))} - {formatter.format( DateField.stringToDate(activePeriod.*[1],'YYYYMMDD'))}"/>	
+
+	
+</mx:HBox>

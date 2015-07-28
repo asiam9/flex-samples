@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="onCreationComplete();"
+		horizontalAlign="center">
+
+	<mx:Script>
+	
+		
+		<![CDATA[
+		
+			protected var active:Boolean;
+			
+			[Embed(source='assets/green.png')]
+			public var green:Class;
+			
+			[Embed(source='assets/red.jpg')]
+			public var red:Class;
+			
+			override public function set data(theData:Object):void {
+				this.active = theData.*[3] == "true";
+			}
+			
+			protected function onCreationComplete():void {
+				if(this.active) {
+					this.image.source = new green();	
+				} else {
+					this.image.source = new red();					
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Image id="image" height="10" />
+	
+	
+</mx:HBox>

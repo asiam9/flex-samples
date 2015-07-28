@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<custom:BaseDataGridPanel xmlns:custom="*" xmlns:mx="http://www.adobe.com/2006/mxml" >
+
+	<mx:DataGrid dataProvider="{this.gridData}" width="100%">
+	   <mx:columns>
+		<mx:DataGridColumn dataField="name" headerText="Name"/>
+		<mx:DataGridColumn dataField="phone" headerText="Phone"/>
+		<mx:DataGridColumn dataField="email" headerText="Email"/>
+		<mx:DataGridColumn dataField="active" headerText="Active" itemRenderer="ActiveItemRenderer"/>
+	   </mx:columns>
+	</mx:DataGrid>
+	
+</custom:BaseDataGridPanel>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<custom:BaseDataGridPanel xmlns:custom="*" xmlns:mx="http://www.adobe.com/2006/mxml" 
+	creationComplete="init();">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import es.arcadiaconsulting.flex.handson12.FilterHeaderChangeEvent;
+			import mx.utils.StringUtil;
+			import mx.collections.ArrayCollection;
+			import mx.controls.DateField;
+			import mx.utils.ObjectUtil;
+			import mx.formatters.DateFormatter;
+			
+			protected function onClickShowSelectionButton():void {
+				if(this.selectionMode.selectedItem == "singleRow" || this.selectionMode.selectedItem == "multipleRows") {
+					Alert.show(arrayToString(this.dataTable.selectedItems));
+				} else {
+					Alert.show(arrayToString(this.dataTable.selectedCells));
+				}
+			}
+			
+			protected function arrayToString(array:Array):String {
+				var result:String = "";
+				for each(var elem:Object in array) {
+					result = result + this.gridData.getItemAt(elem.rowIndex).*[elem.columnIndex];
+				}
+				return result;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Form>
+		<mx:FormItem label="Selection mode">
+			<mx:ComboBox id="selectionMode" dataProvider="{['multipleCells', 'multipleRows', 'none', 'singleCell', 'singleRow']}" />
+		</mx:FormItem>
+		<mx:Button id="ShowSelectionButton" label="Show Selection" click="onClickShowSelectionButton();" />
+	</mx:Form>
+
+
+	<mx:AdvancedDataGrid id="dataTable" dataProvider="{this.gridData}" width="100%" selectionMode="{this.selectionMode.selectedItem}">
+	   <mx:columns>
+		<mx:AdvancedDataGridColumn dataField="name" headerText="Name"  />
+		<mx:AdvancedDataGridColumn dataField="phone" headerText="Phone"/>
+		<mx:AdvancedDataGridColumn dataField="email" headerText="Email"/>
+	   </mx:columns>
+	</mx:AdvancedDataGrid>
+	
+</custom:BaseDataGridPanel>

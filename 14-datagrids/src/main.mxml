@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:custom="*" 
+	layout="vertical" horizontalAlign="center" verticalAlign="middle" creationComplete="init();">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			[Bindable]
+			
+			protected var arrayCollectionData:ArrayCollection;
+			
+			[Bindable]
+			protected var xmlData:XML = 
+				<employees>
+			        <employee>
+				            <name>Christina Coenraets</name>
+				            <phone>555-219-2270</phone>
+				            <email>ccoenraets@fictitious.com</email>
+				            <active>true</active>
+				            <activePeriod>
+				            	<start>20140505</start>
+				            	<end/>
+				            </activePeriod>
+				            <department>Sales</department>
+				        </employee>
+				        <employee>
+				            <name>Mary Jones</name>
+				            <phone>555-219-2000</phone>
+				            <email>mjones@fictitious.com</email>
+				            <active>true</active>
+				            <activePeriod>
+				            	<start>19900101</start>
+				            	<end/>
+				            </activePeriod>
+					        <department>IT</department>
+				        </employee>				        
+				        <employee>
+				            <name>Joanne Wall</name>
+				            <phone>555-219-2012</phone>
+				            <email>jwall@fictitious.com</email>
+				            <active>true</active>
+				            <activePeriod>
+				            	<start>20100101</start>
+				            	<end/>
+				            </activePeriod>
+				            <department>Sales</department>
+				        </employee>
+				        <employee>
+				            <name>Maurice Smith</name>
+				            <phone>555-219-2012</phone>
+				            <email>maurice@fictitious.com</email>
+				            <active>false</active>
+				            <activePeriod>
+				            	<start>20140505</start>
+				            	<end>20150305</end>
+				            </activePeriod>
+				            <department>Sales</department>
+				        </employee>
+					</employees>;	
+					
+				protected function init():void {
+					this.arrayCollectionData = new ArrayCollection();
+					  for each (var value:* in this.xmlData.employee){
+				        this.arrayCollectionData.addItem(value);
+				    }
+				} 	
+		]]>
+	</mx:Script>
+	<mx:TabNavigator width="100%" height="100%">
+		<custom:BasicDataGrid gridData="{this.arrayCollectionData}" label="Basic DataGrid"/>
+		<custom:BasicAdvancedDataGrid gridData="{this.arrayCollectionData}" label="Basic AdvancedDataGrid"/>
+		<custom:ItemRenderer gridData="{this.arrayCollectionData}" label="Item Renderer"/>
+		<custom:CustomSort gridData="{this.arrayCollectionData}" label="Custom Sort"/>
+		<custom:MultiColumnSort gridData="{this.arrayCollectionData}" label="Multi Column Sort"/>
+		<custom:Filtering gridData="{this.arrayCollectionData}" label="Filtering"/>
+		<custom:HeaderRenderer gridData="{this.arrayCollectionData}" label="Header Renderer"/>
+		<custom:RowSelection gridData="{this.arrayCollectionData}" label="Row Selection"/>
+		<custom:DragAndDrop gridData="{this.arrayCollectionData}" label="Drag And Drop"/>
+		<custom:Editable gridData="{this.arrayCollectionData}" label="Editable"/>
+	</mx:TabNavigator>
+</mx:Application>

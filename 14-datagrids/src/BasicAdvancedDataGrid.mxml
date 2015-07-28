@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<custom:BaseDataGridPanel xmlns:custom="*" xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:AdvancedDataGrid dataProvider="{this.gridData}" width="100%">
+	   <mx:columns>
+		<mx:AdvancedDataGridColumn dataField="name" headerText="Name"/>
+		<mx:AdvancedDataGridColumn dataField="phone" headerText="Phone"/>
+		<mx:AdvancedDataGridColumn dataField="email" headerText="Email"/>
+	   </mx:columns>
+	</mx:AdvancedDataGrid>
+</custom:BaseDataGridPanel>
