@@ -4,6 +4,9 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.http.HTTPService;
+			import mx.messaging.messages.HTTPRequestMessage;
 			import mx.collections.XMLListCollection;
 			
 			import mx.collections.ArrayCollection;
@@ -24,13 +27,16 @@
 			// Perform feed request
 			private function onRssSelected():void
 			{
-			if (rssTree.selectedIndex>=0)
-			{
-				var request:URLRequest =  new URLRequest(urlList[rssTree.selectedIndex]);
-				var loader:URLLoader = new URLLoader(request);
-				loader.addEventListener(Event.COMPLETE,onDataLoaded);
-				
-			}
+				if (rssTree.selectedIndex>=0)
+				{
+					
+					var service:HTTPService = new HTTPService(urlList[rssTree.selectedIndex]);
+					service.method = "GET";
+					service.addEventListener("result", httpResult);
+					service.addEventListener("fault", httpFault);
+					service.send();
+					
+				}
 			}
 			
 			// Open link in a new window
@@ -40,9 +46,14 @@
 				navigateToURL(new URLRequest(itemsGrid.selectedItem.link),'_blank');
 			}
 			
-			private function onDataLoaded(event:Event):void {
-				rssDAta = new XMLListCollection(new XML(event.target.data).channel.item);
+			private function httpResult(event:ResultEvent):void {
+				rssDAta = new XMLListCollection(new XML(event.result.data).channel.item);
 			}
+			
+			private function httpFault(event:FaultEvent):void {
+				Alert.show(event.fault.message, "Error");
+			}
+			
 				
 		]]>
 	</mx:Script>
