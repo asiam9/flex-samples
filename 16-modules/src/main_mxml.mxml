@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" 
+		verticalAlign="middle" horizontalAlign="center" >
+	<mx:TabNavigator width="100%" height="100%" >
+		<mx:Panel title="Module 1">
+			<mx:ModuleLoader url="Module1.swf" loading="trace('Loading module 1');" unload="trace('Unloading module 1');"/>
+		</mx:Panel>
+		<mx:Panel title="Module 2">
+			<mx:ModuleLoader url="Module2.swf" loading="trace('Loading module 2');" unload="trace('Unloading module 2');"/>
+		</mx:Panel>
+	</mx:TabNavigator>
+</mx:Application>
