@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="400" height="300"
+		title="{resourceManager.getString('RegisterForm', 'form.department.title')}" close="onClose();">
+		
+	<mx:Metadata>
+		[ResourceBundle("RegisterForm")]
+		[Event(name="departmentSelectedEvent", type="es.arcadiaconsulting.flex.handson15.DepartmentSelectedEvent")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import es.arcadiaconsulting.flex.handson15.DepartmentSelectedEvent;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			protected var departments:ArrayCollection = new ArrayCollection(["Sales", "IT", "Marketing"]);
+			
+			protected function onClickOk():void {
+				dispatchEvent(new DepartmentSelectedEvent(this.departmentList.selectedItem as String));
+				close();
+			}
+
+			protected function onClickCancel():void {
+				close();
+			}
+			
+			protected function onClose(): void {
+				close();
+			}
+			
+			protected function close():void {
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</mx:Script>	
+	
+	<mx:List id="departmentList"  dataProvider="{this.departments} " width="100%" height="100%" />
+	
+	<mx:ApplicationControlBar width="100%">
+		<mx:Button label="{resourceManager.getString('RegisterForm', 'form.department.button.ok')}"
+			click="onClickOk();" 
+			enabled="{this.departmentList.selectedItem != null}" />
+		<mx:Button label="{resourceManager.getString('RegisterForm', 'form.department.button.cancel')}" click="onClickCancel()"/>
+	</mx:ApplicationControlBar>
+	
+</mx:TitleWindow>
