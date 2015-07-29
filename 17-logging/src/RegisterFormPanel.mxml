@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:arcadia="es.arcadiaconsulting.flex.handson17.*" 
+	layout="vertical" width="100%" height="100%" title="{resourceManager.getString('RegisterForm', 'form.title')}" horizontalAlign="center" verticalAlign="middle"
+	creationComplete="onCreationComplete();">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ValidationResultEvent;
+			import mx.logging.LogEventLevel;
+			import mx.logging.targets.TraceTarget;
+			import mx.validators.ValidationResult;
+			import mx.logging.Log;
+			import mx.logging.ILogger;
+			import mx.core.SoundAsset;
+			import mx.resources.ResourceBundle;
+			import mx.validators.Validator;
+			import mx.binding.utils.BindingUtils;
+			import mx.core.Container;
+			import mx.core.UIComponent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			
+			private static  const logger:ILogger = Log.getLogger("RegisterFormPanel");
+			
+         	private var _target:TraceTarget;
+			
+			protected var validators:Array = null; 
+			
+			[Bindable]
+			protected var valid:Boolean = false;
+			
+			[Bindable]
+			protected var currentLocale:String = null;
+			
+			[Embed(source='assets/gong.mp3')]
+			protected var sound:Class;
+			
+			protected static const PROVINCIAS:ArrayCollection = new ArrayCollection([
+				{label: "Madrid", data: 1},
+				{label: "Barcelona", data: 2}]); 	
+			
+			protected function onGuardarClick(event:MouseEvent):void {
+				var asset:SoundAsset = new sound;
+				asset.play();
+				Alert.show(resourceManager.getString("RegisterForm", "form.action.save.ok.message" ), 
+					resourceManager.getString("RegisterForm", "form.action.save.ok.title" ));
+				resetForm(this);
+			}
+			
+			protected function onResetClick(event:MouseEvent): void {
+				resetForm(this);
+			}
+			
+			protected function resetForm(component:Container):void{
+				for each(var child:Object in component.getChildren()) {
+					if(child is TextInput) {
+						(child as TextInput).text = null;
+					} else if(child is RadioButton) {
+						(child as RadioButton).selected = false;
+					} else if(child is DateField) {
+						(child as DateField).text = "";
+					} else if(child is ComboBox){
+						(child as ComboBox).selectedItem = null;
+					} else if(child is Container) {
+						resetForm(child as Container);
+					}
+				}
+			}
+			
+			protected function onCreationComplete():void {
+				this.validators = [this.nombreV, this.apellidosV, this.idTypeV, this.idValueV, this.provinciaV, this.localidadV,
+					this.cpV, this.emailV, this.passwordV, this.confirmPasswordV, this.telefonoFijoV, this.telefonoMovilV, this.confirmPasswordMatchV];
+				this.currentLocale = this.resourceManager.localeChain[0];
+			}
+
+            
+			protected function validateForm():void {
+				if(this.validators) {
+					var validationResult:Array = Validator.validateAll(this.validators);
+						for(var i:int; i< validationResult.length; i++){
+							var val:ValidationResultEvent= validationResult[i] as ValidationResultEvent;
+							for(var j:int; j< val.results.length; j++){
+								var valResult:ValidationResult = val.results[j] as ValidationResult;
+								if(Log.isDebug()) {
+									logger.debug("Validation: [{0}][{1}]:[{2}]", valResult.isError? "Error": "OK", 
+										val.currentTarget != null? val.currentTarget.source.id: "", valResult.errorMessage );
+								}
+							}
+						}
+					this.valid = validationResult.length == 0;
+				} else {
+					this.valid = false;
+				}
+			}
+			
+			protected function onSpanischClick(event:Event):void {
+				this.resourceManager.localeChain = ["es_ES", "en_US"];
+				this.currentLocale = "es_ES";
+				if(Log.isDebug()) {
+					logger.info("Change language to: ", this.currentLocale );
+				}
+			}
+			
+			protected function onEnglishClick(event:Event):void {
+				this.resourceManager.localeChain = ["en_US", "es_ES"];
+				this.currentLocale = "en_US";
+				if(Log.isDebug()) {
+					logger.info("Change language to: ", this.currentLocale );
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		[ResourceBundle("RegisterForm")]
+	</mx:Metadata>	
+	
+	
+	<mx:StringValidator id="nombreV" source="{this.nombre}" property="text" required="true" />
+	<mx:StringValidator id="apellidosV" source="{this.apellidos}" property="text" required="true"/>
+	<mx:StringValidator id="idTypeV" source="{this.idType}" property="selectedValue" required="true" />
+	<mx:StringValidator id="idValueV" source="{this.idValue}" property="text" required="true" />
+	<mx:StringValidator id="provinciaV" source="{this.provincia}" property="text" required="true" />
+	<mx:StringValidator id="localidadV" source="{this.localidad}" property="text" required="true" />
+	<mx:RegExpValidator id="cpV" source="{this.cp}" property="text" required="true" expression="^\d\{5\}$"/>
+	<mx:EmailValidator id="emailV" source="{this.email}" property="text" required="true" />
+	<mx:StringValidator id="passwordV" source="{this.password}" property="text" required="true" minLength="6" />
+	<mx:StringValidator id="confirmPasswordV" source="{this.confirmPassword}" property="text" required="true" minLength="6" />
+	<mx:PhoneNumberValidator id="telefonoFijoV" source="{this.telefonoFijo}" property="text" allowedFormatChars="()+" minDigits="9" required="false"/> 
+	<mx:PhoneNumberValidator id="telefonoMovilV" source="{this.telefonoMovil}" property="text" allowedFormatChars="()+" minDigits="9" required="false"/>
+	<arcadia:PasswordMatchValidator id="confirmPasswordMatchV"  source="{this.confirmPassword}"  property="text" valueToMatch="{this.password.text}" required="false"/> 
+	
+	<mx:Form>
+		<mx:FormHeading label="{resourceManager.getString('RegisterForm', 'form.field.header')}" width="100%" height="100%" textAlign="center"/>
+		
+		<mx:Grid >
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.name')}" labelWidth="150" required="true">
+						<mx:TextInput width="180" id="nombre" change="validateForm();"/>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.surname')}" labelWidth="150" required="true">
+						<mx:TextInput width="210" id="apellidos" change="validateForm();"/>
+					</mx:FormItem>
+				</mx:GridItem>
+			</mx:GridRow>
+			
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:HBox>
+						<mx:RadioButtonGroup id="idType" change="validateForm();"/>
+						<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.id')}" labelWidth="150" required="true">
+							<mx:RadioButton label="{resourceManager.getString('RegisterForm', 'form.field.dni')}" groupName="idType" id="idDni" change="validateForm();"/>
+						</mx:FormItem>
+						<mx:FormItem>
+							<mx:RadioButton label="{resourceManager.getString('RegisterForm', 'form.field.cif')}" groupName="idType" id="idCIF" change="validateForm();"/>
+						</mx:FormItem>
+						<mx:FormItem>
+							<mx:TextInput maxChars="9" width="75" id="idValue" change="validateForm();"/>
+						</mx:FormItem>
+					</mx:HBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.birthdate')}" labelWidth="150" >
+						<mx:DateField id="fechaNacimiento" showToday="false" change="validateForm();"/>
+					</mx:FormItem>				
+				</mx:GridItem>
+				
+			</mx:GridRow>
+
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.state')}" labelWidth="150" required="true">
+						<mx:ComboBox width="185" id="provincia" dataProvider="{PROVINCIAS}" selectedIndex="-1" change="validateForm();"></mx:ComboBox>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:HBox>
+						<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.city')}" labelWidth="150" required="true">
+							<mx:TextInput id="localidad" change="validateForm();"/>
+						</mx:FormItem>
+						<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.zip')}" required="true">
+							<mx:TextInput width="80" id="cp" change="validateForm();"/>
+						</mx:FormItem>
+					</mx:HBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.email')}" labelWidth="150" required="true">
+						<mx:TextInput width="180" id="email" change="validateForm();"/>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:HBox>
+						<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.phone')}" labelWidth="150">
+							<mx:TextInput width="90" id="telefonoFijo" change="validateForm();"/>
+						</mx:FormItem>
+						<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.mobile')}" required="true">
+							<mx:TextInput width="90" id="telefonoMovil" change="validateForm();"/>
+						</mx:FormItem>
+					</mx:HBox>
+				</mx:GridItem>
+			</mx:GridRow>
+
+			<mx:GridRow>
+				<mx:GridItem>
+					<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.password')}" labelWidth="150" required="true">
+						<arcadia:PasswordTextInput id="password" change="validateForm();"/>
+					</mx:FormItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:FormItem label="{resourceManager.getString('RegisterForm', 'form.field.confirmPassword')}" labelWidth="150" required="true">
+						<arcadia:PasswordTextInput id="confirmPassword" change="validateForm();"/>
+					</mx:FormItem>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+	</mx:Form>
+	
+	<mx:ControlBar>
+		<mx:Button label="@Resource(key='form.action.reset', bundle='RegisterForm')" click="onResetClick(event);"/>
+		<mx:Button label="@Resource(key='form.action.save', bundle='RegisterForm')" click="onGuardarClick(event);"  enabled="{this.valid}"/>
+		<mx:LinkButton id="spanishButton" label="@Resource(key='form.language.spanish', bundle='RegisterForm')" click="onSpanischClick(event);" enabled="{this.currentLocale != 'es_ES'}" icon="@Embed(source='assets/es_ES.gif')"/>
+		<mx:LinkButton id="englishButton" label="@Resource(key='form.language.english', bundle='RegisterForm')" click="onEnglishClick(event);" enabled="{this.currentLocale != 'en_US'}" icon="@Embed(source='assets/en_US.gIF')"/>
+	</mx:ControlBar>
+	
+</mx:Panel>

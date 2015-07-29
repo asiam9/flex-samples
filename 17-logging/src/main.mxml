@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" xmlns:ns1="*" horizontalAlign="center" verticalAlign="middle"
+		creationComplete="initLog();">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.logging.Log;
+			import mx.logging.targets.TraceTarget;
+			import mx.logging.LogEventLevel;
+			
+            protected function initLog():void
+            {
+                var target:TraceTarget = new TraceTarget();
+                target.includeTime = true;
+                target.includeLevel = true;
+                target.includeCategory = true;
+                target.level = LogEventLevel.DEBUG;
+                Log.addTarget(target);
+            }			
+		]]>
+	</mx:Script>
+	<ns1:RegisterFormPanel>
+	</ns1:RegisterFormPanel>
+</mx:Application>
