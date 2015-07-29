@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="vertical" horizontalAlign="center" verticalAlign="middle">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.XMLListCollection;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.messaging.AbstractConsumer;
+			import mx.rpc.events.ResultEvent;
+			
+		
+			[Bindable]
+			protected var urlList:ArrayCollection = new ArrayCollection(["http://rss.adobe.com/en/resources_flex.rss",
+				"http://rss.adobe.com/en/resources_dreamweaver.rss",
+				"http://rss.adobe.com/en/resources_photoshop.rss"]);;
+			
+			[Bindable]
+			protected var rssDAta:XMLListCollection;
+			
+			
+			// Perform feed request
+			private function onRssSelected():void
+			{
+			if (rssTree.selectedIndex>=0)
+			{
+				var request:URLRequest =  new URLRequest(urlList[rssTree.selectedIndex]);
+				var loader:URLLoader = new URLLoader(request);
+				loader.addEventListener(Event.COMPLETE,onDataLoaded);
+				
+			}
+			}
+			
+			// Open link in a new window
+			private function onLinkSelected():void
+			{
+				if (itemsGrid.selectedIndex>=0)
+				navigateToURL(new URLRequest(itemsGrid.selectedItem.link),'_blank');
+			}
+			
+			private function onDataLoaded(event:Event):void {
+				rssDAta = new XMLListCollection(new XML(event.target.data).channel.item);
+			}
+				
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Panel width="100%" height="100%" title="Lector de RSS">
+		<mx:HDividedBox width="100%" height="100%">
+			<mx:Tree id="rssTree" width="40%" height="100%" click="onRssSelected()"
+					 dataProvider="{urlList}"/>
+			<mx:VBox width="100%" height="100%">
+				<mx:AdvancedDataGrid id="itemsGrid" width="100%" height="60%"
+							dataProvider="{rssDAta}" selectionMode="singleRow" sortExpertMode="true">
+					<mx:columns>
+						<mx:AdvancedDataGridColumn  dataField="pubdate" headerText="Fecha"/>
+						<mx:AdvancedDataGridColumn dataField="author" headerText="Autor"/>
+						<mx:AdvancedDataGridColumn dataField="title" headerText="Título"/>
+					</mx:columns>
+				</mx:AdvancedDataGrid>
+				
+				<mx:TextArea id="descriptionText" width="100%" height="40%" 
+												text="{itemsGrid.selectedItem.description}" />
+			</mx:VBox>
+		</mx:HDividedBox>
+		
+	</mx:Panel>
+	
+</mx:Application>
