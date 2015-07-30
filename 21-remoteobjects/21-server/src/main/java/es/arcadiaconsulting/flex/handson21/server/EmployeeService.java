@@ -121,6 +121,7 @@ public class EmployeeService {
 		
 		if(employee != null)
 			synchronized (data) {
+				data.remove(employee);
 				data.add(employee);
 		}
 		

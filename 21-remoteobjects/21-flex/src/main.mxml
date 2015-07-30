@@ -22,8 +22,12 @@
 				loadDataSource();
 			}
 			
-			protected function loadDataSource(){
-				this.remoteObject.getEmployees();
+			protected function loadDataSource():void{
+				if(this.search.text != null && this.search.text != "") {
+					this.remoteObject.findEmployees(this.search.text);
+				} else {
+					this.remoteObject.getEmployees();	
+				}
 			}
 			
 			protected function onResult(event:ResultEvent):void {
