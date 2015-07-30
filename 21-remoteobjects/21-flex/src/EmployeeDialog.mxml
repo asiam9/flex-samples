@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="400" height="300" 
+		title="Nuevo empleado" showCloseButton="true" close="onClose();" creationComplete="init();">
+
+	<mx:Metadata>
+		[Event(name="employeeEditEvent", type="es.arcadiaconsulting.flex.handson21.EmployeeEditEvent")]
+	</mx:Metadata>
+		
+	<mx:Script>
+		<![CDATA[
+			import mx.validators.Validator;
+			import mx.managers.PopUpManager;
+			import es.arcadiaconsulting.flex.handson21.EmployeeEditEvent;
+			import es.arcadiaconsulting.flex.handson21.Employee;
+			import mx.collections.ArrayCollection;
+			
+			protected var _employee:Employee;
+		
+			[Bindable]
+			protected var validForm:Boolean = false;
+			
+			protected var validators:Array;
+			
+			protected function init():void {
+				this.validators = [this.nameValidator, this.phoneValidator, this.emailValidator];
+			}
+			
+			protected function onClose():void {
+				close();
+			}
+			
+			protected function close():void {
+				PopUpManager.removePopUp(this);
+			}
+			
+			protected function validate():void {
+				var validationResult:Array = Validator.validateAll(this.validators);
+				for(var i:int; i< validationResult.length; i++){
+					trace(validationResult[i]);
+				}
+				this.validForm = validationResult.length == 0;
+			}
+			
+			protected function onClickOkButton():void {
+				var evEmoployee:Employee=new Employee();
+				evEmoployee.name = this.nameText.text;
+				evEmoployee.phone = this.phoneText.text;
+				evEmoployee.email = this.emailText.text;
+				if(_employee != null) {
+					evEmoployee.id = _employee.id;
+				}
+				dispatchEvent(new EmployeeEditEvent(evEmoployee));
+				close();
+			}
+			
+			protected function onClickCancelButton():void {
+				close();
+			}
+			
+			public function set employee(employee:Employee):void {
+				this._employee = employee;
+				this.nameText.text = _employee.name;
+				this.phoneText.text = _employee.phone;
+				this.emailText.text = _employee.email;
+				this.title = "Editar empleado";
+			}
+		]]>
+	</mx:Script>
+	
+		
+	<mx:StringValidator id="nameValidator" source="{this.nameText}" property="text" required="true" />
+	<mx:PhoneNumberValidator id="phoneValidator" source="{this.phoneText}" property="text" required="true" allowedFormatChars="()+" minDigits="9"/>
+	<mx:EmailValidator id="emailValidator" source="{this.emailText}" property="text" required="true" />
+
+	<mx:Form width="100%" height="100%">
+		<mx:FormItem label="Nombre">
+			<mx:TextInput id="nameText" change="validate();"/>
+		</mx:FormItem>
+		<mx:FormItem label="Teléfono">
+			<mx:TextInput id="phoneText" change="validate();"/>
+		</mx:FormItem>
+		<mx:FormItem label="Email">
+			<mx:TextInput id="emailText" change="validate();"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:ApplicationControlBar width="100%">
+		<mx:Button id="okButton" label="Guardar" enabled="{validForm}" click="onClickOkButton();"/>
+		<mx:Button id="cancelButton" label="Cancelar" click="onClickCancelButton()"/>
+	</mx:ApplicationControlBar>
+	
+</mx:TitleWindow>
