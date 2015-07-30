@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" creationComplete="init();">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.soap.WebService;
+			import mx.rpc.events.ResultEvent;
+			
+			protected var ws:WebService;
+		
+		
+			protected function init():void {
+				this.ws = new WebService();
+				this.ws.wsdl = "http://localhost:8080/math?WSDL";
+				this.ws.requestTimeout = 15;
+				this.ws.useProxy = false;
+				this.ws.addEventListener(ResultEvent.RESULT, onResult);
+				this.ws.addEventListener(FaultEvent.FAULT, onFault);
+				this.ws.loadWSDL();
+			}
+			
+			public function sum():void {
+				this.ws.sum(int(this.a.text), int(this.b.text));
+				this.ws.sum.send(int(this.a.text), int(this.b.text));
+			}
+				
+			public function onResult(event:ResultEvent):void {
+				this.result.text = String(event.result); 
+			}
+			
+			public function onFault(event:FaultEvent):void {	
+				var faultstring:String = event.fault.faultString;
+				Alert.show(faultstring)
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Panel layout="vertical">
+	
+	
+		<mx:Form>
+			<mx:FormItem label="a">
+				<mx:TextInput id="a"/>
+			</mx:FormItem>
+			<mx:FormItem label="b">
+				<mx:TextInput id="b"/>
+			</mx:FormItem>
+			<mx:FormItem label="result">
+				<mx:TextInput id="result"/>
+			</mx:FormItem>
+			
+		</mx:Form>
+		
+		<mx:ApplicationControlBar>
+			<mx:Button click="sum();" label="Suma!"/>
+		</mx:ApplicationControlBar>		
+		
+	</mx:Panel>
+
+</mx:Application>

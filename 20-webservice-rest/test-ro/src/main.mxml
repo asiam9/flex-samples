@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	horizontalAlign="center" verticalAlign="middle" creationComplete="init();">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.remoting.RemoteObject;
+			import mx.collections.ArrayCollection;
+	
+			[Bindable]	
+			protected var employees:ArrayCollection;
+			
+			protected function init():void {
+				this.remoteObject.getEmployees();
+			}
+			
+			protected function onResult(event:ResultEvent):void {
+				this.employees = event.result as ArrayCollection;
+			}
+			
+			protected function onFault(event:FaultEvent):void {
+				Alert.show(event.fault.faultString);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="remoteObject" destination="EmployeeService"
+		result="onResult(event)"
+		fault="onFault(event)"/>	
+	
+	<mx:Panel title="Empelados Test"  width="100%" height="100%">
+		<mx:AdvancedDataGrid dataProvider="{this.employees}">
+			<mx:columns>
+				<mx:AdvancedDataGridColumn headerText="Nombre" dataField="name" />
+				<mx:AdvancedDataGridColumn headerText="Teléfono" dataField="phone" />
+				<mx:AdvancedDataGridColumn headerText="Email" dataField="mail" />
+			</mx:columns>
+		</mx:AdvancedDataGrid>
+		
+	</mx:Panel>
+	
+</mx:Application>

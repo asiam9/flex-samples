@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" creationComplete="init();">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.http.HTTPService;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.soap.WebService;
+			import mx.rpc.events.ResultEvent;
+			
+		
+		
+			
+			public function sum():void {
+				var service:HTTPService = new HTTPService("http://localhost:8080/math/sum?a="+this.a.text+"&b="+this.b.text);
+				service.method = "GET";
+				service.addEventListener("result", onResult);
+				service.addEventListener("fault", onFault);
+				service.send();
+			}
+				
+			public function onResult(event:ResultEvent):void {
+				this.result.text = String(event.result); 
+			}
+			
+			public function onFault(event:FaultEvent):void {	
+				var faultstring:String = event.fault.faultString;
+				Alert.show(faultstring)
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Panel layout="vertical">
+	
+	
+		<mx:Form>
+			<mx:FormItem label="a">
+				<mx:TextInput id="a"/>
+			</mx:FormItem>
+			<mx:FormItem label="b">
+				<mx:TextInput id="b"/>
+			</mx:FormItem>
+			<mx:FormItem label="result">
+				<mx:TextInput id="result"/>
+			</mx:FormItem>
+			
+		</mx:Form>
+		
+		<mx:ApplicationControlBar>
+			<mx:Button click="sum();" label="Suma!"/>
+		</mx:ApplicationControlBar>		
+		
+	</mx:Panel>
+
+</mx:Application>
