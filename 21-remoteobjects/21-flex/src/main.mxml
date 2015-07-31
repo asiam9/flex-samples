@@ -13,6 +13,9 @@
 			import mx.rpc.remoting.RemoteObject;
 			import mx.collections.ArrayCollection;
 	
+			protected static const availableEmployeeRoles:ArrayCollection =  
+				new ArrayCollection(["IT", "Sales", "CEO", "Developer"]);
+	
 			[Bindable]	
 			protected var employees:ArrayCollection;
 			
@@ -43,6 +46,7 @@
 			protected function onClickAddButton():void {
 				this.dialogEdit = false;
 				var dialog:EmployeeDialog = PopUpManager.createPopUp(this, EmployeeDialog, true) as EmployeeDialog;
+				dialog.availableEmployeeRoles = cloneAvailableRoles();
 				dialog.addEventListener("employeeEditEvent", onEmployeeCreated);
 				PopUpManager.centerPopUp(dialog);
 			}
@@ -55,7 +59,8 @@
 			protected function onClickEditButton():void {
 				this.dialogEdit = true;
 				var dialog:EmployeeDialog = PopUpManager.createPopUp(this, EmployeeDialog, true) as EmployeeDialog;
-				dialog.employee = this.employeesGrid.selectedItem as Employee;
+				dialog.employee = (this.employeesGrid.selectedItem as Employee).clone();
+				dialog.availableEmployeeRoles = cloneAvailableRoles();
 				dialog.addEventListener("employeeEditEvent", onEmployeeEdited);
 				PopUpManager.centerPopUp(dialog);
 			}
@@ -72,6 +77,14 @@
 			protected function onEmployeeEdited(event:EmployeeEditEvent) {
 				this.remoteObject.updateEmployee(event.employee);
 				loadDataSource();
+			}
+			
+			protected function cloneAvailableRoles():ArrayCollection {
+				var result:ArrayCollection = new ArrayCollection();
+				for each(var rol:String in availableEmployeeRoles) {
+					result.addItem(rol);
+				}
+				return result;
 			}
 		]]>
 	</mx:Script>
@@ -94,6 +107,7 @@
 				<mx:AdvancedDataGridColumn headerText="Nombre" dataField="name" />
 				<mx:AdvancedDataGridColumn headerText="Teléfono" dataField="phone" />
 				<mx:AdvancedDataGridColumn headerText="Email" dataField="email" />
+				<mx:AdvancedDataGridColumn headerText="Roles" dataField="roles" itemRenderer="RolesRenderer" />
 			</mx:columns>
 		</mx:AdvancedDataGrid>
 	</mx:Panel>

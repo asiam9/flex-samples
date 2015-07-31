@@ -1,5 +1,9 @@
 package es.arcadiaconsulting.flex.handson21.server.model;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * POJO for Employee class
  * @author ggomez
@@ -15,17 +19,20 @@ public class Employee {
 	
 	protected String email;
 	
+	protected Set<String> roles;
+	
 
 	public Employee() {
 		super();
 	}
 
-	public Employee(Long id, String name, String phone, String email) {
+	public Employee(Long id, String name, String phone, String email, Collection<String> roles) {
 		super();
 		this.id = 1L;
 		this.name = name;
 		this.phone = phone;
 		this.email = email;
+		this.roles = new HashSet<String>(roles);
 	}
 
 	public String getName() {
@@ -66,6 +73,14 @@ public class Employee {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
 	}
 
 	@Override

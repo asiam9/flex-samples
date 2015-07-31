@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Label xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			override public function set data(value:Object):void {
+				super.data = value;
+				if(value && value.roles as ArrayCollection) {
+					this.text = (value.roles as ArrayCollection).source.join(",");
+				}
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Label>

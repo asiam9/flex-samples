@@ -21,8 +21,24 @@
 			
 			protected var validators:Array;
 			
+			[Bindable]
+			protected var _availableEmployeeRoles:ArrayCollection;
+			
+			[Bindable]
+			protected var _employeeRoles:ArrayCollection;
+			
+			
 			protected function init():void {
 				this.validators = [this.nameValidator, this.phoneValidator, this.emailValidator];
+				this._employeeRoles = new ArrayCollection();
+				if(this._employee != null && this._employee.roles.length > 0 
+					&& _availableEmployeeRoles != null && _availableEmployeeRoles.length > 0 ) {
+					for each(var rol:String in this._employee.roles) {
+							this._availableEmployeeRoles.removeItemAt(_availableEmployeeRoles.getItemIndex(rol));
+							this._employeeRoles.addItem(rol);	
+						}
+					}
+				}
 			}
 			
 			protected function onClose():void {
@@ -49,6 +65,7 @@
 				if(_employee != null) {
 					evEmoployee.id = _employee.id;
 				}
+				evEmoployee.roles = new ArrayCollection(this._employeeRoles.source);
 				dispatchEvent(new EmployeeEditEvent(evEmoployee));
 				close();
 			}
@@ -63,6 +80,48 @@
 				this.phoneText.text = _employee.phone;
 				this.emailText.text = _employee.email;
 				this.title = "Editar empleado";
+			}
+			
+			protected function onClickAddRole():void {
+				for each(var role:Object in this.availableRoles.selectedItems) {
+					this._availableEmployeeRoles.removeItemAt(this._availableEmployeeRoles.getItemIndex(role));
+					this._employeeRoles.addItem(role);
+				}
+				validate();
+			}
+
+			protected function onClickAddRoleList(event:Event):void {
+				for each(var role:Object in this.availableRoles.selectedItems) {
+					this._availableEmployeeRoles.removeItemAt(this._availableEmployeeRoles.getItemIndex(role));
+					this._employeeRoles.addItem(role);
+				}
+				validate();
+			}
+
+			protected function onClickRemoveRole():void {
+				for each(var role:Object in this._employeeRoles) {
+					this._employeeRoles.removeItemAt(this._employeeRoles.getItemIndex(role));
+					this._availableEmployeeRoles.addItem(role);
+				}
+				validate();
+			}
+			
+			protected function onClickRemoveRoleList(event:Event):void {
+				for each(var role:Object in this._employeeRoles) {
+					this._employeeRoles.removeItemAt(this._employeeRoles.getItemIndex(role));
+					this._availableEmployeeRoles.addItem(role);
+				}
+				validate();
+			}
+			
+			
+			public function get availableEmployeeRoles():ArrayCollection {
+				return this._availableEmployeeRoles;
+			}
+			
+			public function set availableEmployeeRoles(
+				availableEmployeeRoles:ArrayCollection):void {
+				this._availableEmployeeRoles = availableEmployeeRoles;
 			}
 		]]>
 	</mx:Script>
@@ -84,9 +143,20 @@
 		</mx:FormItem>
 	</mx:Form>
 	
+	<mx:HBox>
+		<mx:List id="availableRoles" dataProvider="{this._availableEmployeeRoles}" verticalAlign="middle"
+			doubleClick="onClickAddRoleList(event);" doubleClickEnabled="true" change="validate();"/>
+		<mx:VBox verticalAlign="middle" >
+			<mx:Button label="+" click="onClickAddRole();"/>
+			<mx:Button label="-" click="onClickRemoveRole();"/>
+		</mx:VBox>
+		<mx:List id="employeeRoles" dataProvider="{this._employeeRoles}" verticalAlign="middle"
+			doubleClick="onClickRemoveRoleList(event);" doubleClickEnabled="true"/>
+	</mx:HBox>
+	
 	<mx:ApplicationControlBar width="100%">
 		<mx:Button id="okButton" label="Guardar" enabled="{validForm}" click="onClickOkButton();"/>
-		<mx:Button id="cancelButton" label="Cancelar" click="onClickCancelButton()"/>
+		<mx:Button id="cancelButton" label="Cancelar" click="onClickCancelButton()" change="validate();"/>
 	</mx:ApplicationControlBar>
 	
 </mx:TitleWindow>

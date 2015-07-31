@@ -1,39 +1,10 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package es.arcadiaconsulting.flex.handson21.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +29,8 @@ public class EmployeeService {
 	protected static long MAX_ID = 1L;
 	
 	static {
-		data.add(new Employee(MAX_ID, "Gonzalo GÓmez GarcÍa", "666777888", "gonzalo@arcidaconsulting.es"));
+		data.add(new Employee(MAX_ID, "Gonzalo Gomez Garcia", "666777888", "gonzalo@arcidaconsulting.es",
+				Arrays.asList("IT", "Sales", "CEO")));
 	}
 	
 	
