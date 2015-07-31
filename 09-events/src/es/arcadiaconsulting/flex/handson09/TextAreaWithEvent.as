@@ -21,7 +21,6 @@ package es.arcadiaconsulting.flex.handson09
 		public function onTextInput(event:Event):void {
 			if(this.text == this._matchingValue) {
 				var sameValueEvent:Event = new SameValueEvent(this.text);
-				sameValueEvent.target; 
 				dispatchEvent(sameValueEvent);
 			}
 		}

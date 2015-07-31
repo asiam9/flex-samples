@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="400" height="300"
-		title="{resourceManager.getString('RegisterForm', 'form.department.title')}" close="onClose();">
+		title="{resourceManager.getString('RegisterForm', 'form.department.title')}" showCloseButton="true"
+		close="onClose();">
 		
 	<mx:Metadata>
 		[ResourceBundle("RegisterForm")]

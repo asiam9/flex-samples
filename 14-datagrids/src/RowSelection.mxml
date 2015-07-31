@@ -23,7 +23,13 @@
 			protected function arrayToString(array:Array):String {
 				var result:String = "";
 				for each(var elem:Object in array) {
-					result = result + this.gridData.getItemAt(elem.rowIndex).*[elem.columnIndex];
+				if(this.selectionMode.selectedItem == "singleRow" ||
+					this.selectionMode.selectedItem == "multipleRows") {
+						result = result + elem.toString();
+					} else {
+						result = result + this.gridData.getItemAt(elem.rowIndex).*[elem.columnIndex];
+					}  
+					
 				}
 				return result;
 			}

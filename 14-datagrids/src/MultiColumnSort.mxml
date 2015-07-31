@@ -6,6 +6,7 @@
 			import mx.controls.DateField;
 			import mx.utils.ObjectUtil;
 			import mx.formatters.DateFormatter;
+			
 			protected function sortActivePeriod(obj1:Object, obj2:Object):int {
 				var obj1Start:Date = DateField.stringToDate(obj1.activePeriod[0].*[0],"YYYYMMDD");
 				var obj1End:Date = DateField.stringToDate(obj1.activePeriod[0].*[1],"YYYYMMDD")
@@ -14,7 +15,19 @@
 				
 				var startCompare:int = ObjectUtil.dateCompare(obj1Start, obj2Start);
 				if(startCompare == 0) {
-					return ObjectUtil.dateCompare(obj1End, obj2End);
+					if(obj1End == null) {
+						if(obj2End == null) {
+							return 0;
+						} else {
+							return -1
+						}
+					}  else {
+						if(obj2End == null) {
+							return 1;
+						} else {
+							return ObjectUtil.dateCompare(obj1End, obj2End);
+						}
+					}
 				} else {
 					return startCompare;
 				}

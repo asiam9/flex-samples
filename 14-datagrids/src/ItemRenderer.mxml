@@ -7,6 +7,9 @@
 		<mx:DataGridColumn dataField="phone" headerText="Phone"/>
 		<mx:DataGridColumn dataField="email" headerText="Email"/>
 		<mx:DataGridColumn dataField="active" headerText="Active" itemRenderer="ActiveItemRenderer"/>
+		<mx:DataGridColumn dataField="activePeriod" headerText="Active Period" 
+			itemRenderer="ActivePeriodItemRenderer"/>
+		
 	   </mx:columns>
 	</mx:DataGrid>
 	

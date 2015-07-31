@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextArea xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="onCreationComplete();">
+
+	<mx:Script>
+		<![CDATA[
+			import es.arcadiaconsulting.flex.handson09.SameValueEvent;
+			
+			public var matchingValue:String;
+			
+			public function onCreationComplete():void {
+				this.addEventListener(Event.CHANGE, onChange);
+			}
+			
+			public function onChange(event:Event):void {
+				if(this.text == this.matchingValue) {
+					this.dispatchEvent(new SameValueEvent(this.text));
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		
+		[Event(name="sameValueEvent", type="es.arcadiaconsulting.flex.handson09.SameValueEvent")]
+	</mx:Metadata>
+	
+	
+	
+</mx:TextArea>
